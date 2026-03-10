@@ -1,6 +1,6 @@
 # Eneté Closer — Frontend
 
-Frontend de **Eneté Closer**, sistema de gestión de consignación de vehículos y CRM para intermediarios automotores. Construido con **Nuxt 3**, combina un catálogo público optimizado para SEO con un panel de administración completo.
+Frontend de **Eneté Closer**, sistema de gestión de consignación de vehículos y CRM para intermediarios automotores. Construido con **Nuxt 4**, combina un catálogo público optimizado para SEO con un panel de administración completo.
 
 > Para detalles técnicos profundos, páginas, stores y convenciones → ver [CONTEXT.md](./CONTEXT.md)
 
@@ -10,7 +10,7 @@ Frontend de **Eneté Closer**, sistema de gestión de consignación de vehículo
 
 | Capa | Tecnología |
 |---|---|
-| **Framework** | Nuxt 3 |
+| **Framework** | Nuxt 4 |
 | **Lenguaje** | TypeScript |
 | **UI** | shadcn-vue + Tailwind CSS |
 | **Estado global** | Pinia |

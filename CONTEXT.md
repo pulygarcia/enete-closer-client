@@ -131,7 +131,6 @@ Para forzar client-only en el admin usar en el layout:
 ```
 
 ---
-
 ## Índice Rápido
 
 | Si buscás… | Archivo |
@@ -151,7 +150,6 @@ Para forzar client-only en el admin usar en el layout:
 
 ### Service (sin estado)
 ```typescript
-// services/vehicle.service.ts
 export const vehicleService = {
   async getAll(filters?: VehicleFilters): Promise<ApiResponse<Vehicle[]>> {
     return $fetch('/api/vehicles', { params: filters })
@@ -180,7 +178,6 @@ export type CreateVehicleDto = z.infer<typeof createVehicleSchema>
 ```
 
 ---
-
 ## Tipos API Genéricos
 ```typescript
 // types/api.types.ts
@@ -196,17 +193,6 @@ export interface PaginationMeta {
   totalPages: number
 }
 ```
-
----
-
-## Variables de Entorno
-```env
-NUXT_PUBLIC_API_BASE_URL=http://localhost:3000/api
-NUXT_PUBLIC_APP_URL=http://localhost:3001
-```
-
----
-
 ## Convenciones
 
 - **Componentes** → PascalCase (`VehicleCard.vue`)
@@ -217,3 +203,49 @@ NUXT_PUBLIC_APP_URL=http://localhost:3001
 - **Tipos** → sufijo `.types` (`vehicle.types.ts`)
 - **Idioma del código** → inglés
 - **Idioma de mensajes de error y UI** → español
+
+#### Colores principales
+#### Tokens modificados (`:root` en `assets/css/main.css`)
+
+| Token | Valor | Uso |
+|---|---|---|
+| `--primary` | `oklch(0.75 0.15 70)` | Ámbar — botones primarios, highlights |
+| `--primary-foreground` | `oklch(0.15 0.01 70)` | Texto sobre fondo ámbar |
+| `--accent` | `oklch(0.95 0.02 85)` | Crema — fondos secundarios, hover suave |
+| `--accent-foreground` | `oklch(0.2 0.01 70)` | Texto sobre fondo crema |
+| `--background` | `oklch(0.98 0.004 85)` | Fondo general de la app |
+| `--border` | `oklch(0.9 0.008 85)` | Bordes de cards e inputs |
+| `--input` | `oklch(0.9 0.008 85)` | Borde de campos de formulario |
+| `--ring` | `oklch(0.75 0.15 70)` | Ámbar — ring de focus |
+| `--radius` | `0.5rem` | Border radius base de componentes |
+
+#### Tokens sin modificar (valores default Zinc de shadcn)
+`--foreground` · `--card` · `--muted` · `--secondary` · `--destructive` · `--sidebar-*`
+---
+### Colores de estado (vehículos)
+Estos no son tokens de shadcn, se aplican con clases de Tailwind directamente:
+
+| Estado | Clase Tailwind | Uso |
+|---|---|---|
+| `AVAILABLE` | `text-green-600 bg-green-50` | Badge disponible |
+| `RESERVED` | `text-amber-600 bg-amber-50` | Badge reservado |
+| `SOLD` | `text-zinc-500 bg-zinc-100` | Badge vendido |
+
+### Lineamientos de Componentes
+
+- **Botón primario** → fondo ámbar (`accent`), texto oscuro, sin sombra
+- **Botón secundario** → borde `border` con fondo transparente, texto primario
+- **Botón destructivo** → solo para eliminar, color `error`, pedir confirmación siempre
+- **Badges de estado vehículo:**
+  - `AVAILABLE` → verde suave (`success`)
+  - `RESERVED` → ámbar suave (`warning`)
+  - `SOLD` → gris neutro (`neutral`)
+- **Cards del catálogo** → fondo `surface`, borde `border`, sombra suave, radius `0.5rem`
+- **Inputs** → fondo `surface`, borde `border`, focus con ring ámbar
+
+---
+### Lo que NO hacer
+
+- No usar colores que no van con la identidad
+- No usar sombras pesadas ni degradados
+- No mezclar más de 2 fuentes en una misma vista
