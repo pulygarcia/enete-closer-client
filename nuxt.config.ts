@@ -1,5 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
+      whatsappPhone: process.env.NUXT_PUBLIC_WHATSAPP_PHONE,
+    },
+  },
   modules: [
     '@nuxtjs/tailwindcss', 
     'shadcn-nuxt', 

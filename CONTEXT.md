@@ -218,6 +218,9 @@ export interface PaginationMeta {
 | `--input` | `oklch(0.9 0.008 85)` | Borde de campos de formulario |
 | `--ring` | `oklch(0.75 0.15 70)` | Ámbar — ring de focus |
 | `--radius` | `0.5rem` | Border radius base de componentes |
+| `--footer-bg` | `oklch(0.15 0.005 85)` | Fondo del footer |
+| `--footer-text` | `oklch(0.65 0.008 85)` | Texto principal del footer |
+| `--footer-text-muted` | `oklch(0.45 0.005 85)` | Texto secundario del footer |
 
 #### Tokens sin modificar (valores default Zinc de shadcn)
 `--foreground` · `--card` · `--muted` · `--secondary` · `--destructive` · `--sidebar-*`
@@ -233,15 +236,11 @@ Estos no son tokens de shadcn, se aplican con clases de Tailwind directamente:
 
 ### Lineamientos de Componentes
 
-- **Botón primario** → fondo ámbar (`accent`), texto oscuro, sin sombra
-- **Botón secundario** → borde `border` con fondo transparente, texto primario
-- **Botón destructivo** → solo para eliminar, color `error`, pedir confirmación siempre
-- **Badges de estado vehículo:**
-  - `AVAILABLE` → verde suave (`success`)
-  - `RESERVED` → ámbar suave (`warning`)
-  - `SOLD` → gris neutro (`neutral`)
-- **Cards del catálogo** → fondo `surface`, borde `border`, sombra suave, radius `0.5rem`
-- **Inputs** → fondo `surface`, borde `border`, focus con ring ámbar
+- **Botón primario** → `bg-primary text-primary-foreground` (ámbar, texto oscuro)
+- **Botón secundario** → `border border-border bg-transparent` 
+- **Botón destructivo** → usar variante `destructive` de shadcn, siempre pedir confirmación
+- **Cards** → `bg-card border border-border rounded-lg shadow-sm`
+- **Inputs** → usar componentes de shadcn, el ring de focus ya es ámbar por `--ring`
 
 ---
 ### Lo que NO hacer
