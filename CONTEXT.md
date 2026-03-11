@@ -244,7 +244,7 @@ Estos no son tokens de shadcn, se aplican con clases de Tailwind directamente:
 
 ---
 ### Lo que NO hacer
-
+- No usar emojis en ningun momento, en su lugar usar svg's
 - No usar colores que no van con la identidad
 - No usar sombras pesadas ni degradados
 - No mezclar más de 2 fuentes en una misma vista

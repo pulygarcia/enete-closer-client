@@ -55,6 +55,13 @@
   --footer-bg: oklch(0.15 0.005 85);
   --footer-text: oklch(0.65 0.008 85);
   --footer-text-muted: oklch(0.45 0.005 85);
+  /*badge status*/
+  --status-available: oklch(0.93 0.08 145);
+  --status-available-text: oklch(0.4 0.12 145);
+  --status-reserved: oklch(0.95 0.08 80);
+  --status-reserved-text: oklch(0.5 0.12 70);
+  --status-sold: oklch(0.92 0 0);
+  --status-sold-text: oklch(0.5 0 0);
 }
 
 .dark {
