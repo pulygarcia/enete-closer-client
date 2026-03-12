@@ -14,25 +14,31 @@ import { Switch } from '~/components/ui/switch'
 
 import { formatPrice } from '~/lib/utils'
 
+const { vehicles, isLoading, loadFeatured } = useVehicles()
 
 useSeoMeta({
   title: 'ENETE Vehículos — Tu próximo vehículo, sin vueltas',
   description: 'Encontrá tu próximo vehículo',
 })
 
-const acceptsTrade = ref(true)
-const featuredVehicles = [
-  { id: 1, brand: 'Toyota', model: 'Corolla', year: 2021, km: 45000, transmission: 'AUTOMATIC', list_price: 14500000, status: 'AVAILABLE', accepts_trade: true },
-  { id: 2, brand: 'Ford', model: 'Ranger XLS', year: 2020, km: 72000, transmission: 'MANUAL', list_price: 18200000, status: 'RESERVED', accepts_trade: true },
-  { id: 3, brand: 'Volkswagen', model: 'Polo', year: 2022, km: 28000, transmission: 'AUTOMATIC', list_price: 11800000, status: 'AVAILABLE', accepts_trade: false },
-]
+onMounted(() => {
+  loadFeatured()
+})
+
+const featuredVehicles = computed(() => {
+  let result = vehicles.value ?? []
+  if (acceptsTrade.value) {
+    result = result.filter(v => v.accepts_trade)
+  }
+  return result.slice(0, 6)
+})
 
 const brands = computed(() => {
-  return [...new Set(featuredVehicles.map(v => v.brand))]
+  return [...new Set((vehicles.value ?? []).map(v => v.brand))]
 })
 
 const priceRanges = computed(() => {
-  const maxPrice = Math.max(...featuredVehicles.map(v => v.list_price))
+  const maxPrice = Math.max(...(vehicles.value ?? []).map(v => v.list_price))
 
   const step = 5000000
   const ranges = []
@@ -43,6 +49,8 @@ const priceRanges = computed(() => {
 
   return ranges
 })
+
+const acceptsTrade = ref(true)
 </script>
 
 <template>
@@ -81,10 +89,28 @@ const priceRanges = computed(() => {
 
           <div class="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3">
             <span class="text-sm text-muted-foreground">Acepta permuta</span>
-            <Switch v-model:checked="acceptsTrade" />
+            <!-- <ClientOnly>/ /TODO: funciona visualmente al clickear pero diempre está unchecked, no se pudo implementar, revisar.
+              <Switch
+                :checked="acceptsTrade"
+                @click="acceptsTrade = !acceptsTrade"
+              />
+            </ClientOnly> -->
+            <button 
+              type="button"
+              role="switch"
+              :aria-checked="acceptsTrade"
+              @click="acceptsTrade = !acceptsTrade"
+              class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors"
+              :class="acceptsTrade ? 'bg-primary' : 'bg-input'"
+            >
+              <span
+                class="pointer-events-none block h-5 w-5 rounded-full bg-background shadow-sm transition-transform"
+                :class="acceptsTrade ? 'translate-x-5' : 'translate-x-0'"
+              />
+            </button>
           </div>
 
-          <Button class="w-full font-display font-bold cursor-pointer">
+          <Button class="w-full font-display font-bold cursor-pointer"><!--todo: implementar navigate con filters a page correspondiente-->
             Buscar
           </Button>
 
