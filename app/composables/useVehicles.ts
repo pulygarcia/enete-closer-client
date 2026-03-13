@@ -15,6 +15,14 @@ export function useVehicles() {
     await store.fetchAll()
   }
 
+  async function loadAll() {
+    await store.fetchAll({ status: 'AVAILABLE' })
+  }
+
+  async function fetchOne(id: string) {
+    await store.fetchById(id)
+  }
+
   return {
     vehicles: computed(() => store.vehicles),
     currentVehicle: computed(() => store.currentVehicle),
@@ -24,5 +32,7 @@ export function useVehicles() {
     filters,
     search,
     loadFeatured,
+    loadAll,
+    fetchOne,
   }
 }

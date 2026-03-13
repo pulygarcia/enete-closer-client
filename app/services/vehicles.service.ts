@@ -1,4 +1,4 @@
-import type { PaginationMeta } from '~/types/api.types'
+//import type { PaginationMeta } from '~/types/api.types'
 import type { Vehicle, VehicleFilters } from '~/types/vehicle.types'
 
 export const vehicleService = {
