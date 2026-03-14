@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import AcceptsTradeSwitch from '~/components/common/AcceptsTradeSwitch.vue'
+import HighlightedVehiclesHeader from '~/components/common/HighlightedVehiclesHeader.vue'
+import LandingCTA from '~/components/common/LandingCTA.vue'
+import LandingHero from '~/components/common/LandingHero.vue'
+import LandingPaymentMethods from '~/components/common/LandingPaymentMethods.vue'
+import Spinner from '~/components/common/Spinner.vue'
+import WhyUs from '~/components/common/WhyUs.vue'
 import { formatPrice, statusLabel } from '~/lib/utils'
 
 const { 
@@ -142,7 +149,7 @@ const acceptsTrade = ref(true)
 
     <WhyUs />
 
-    <LandingPaymentMethods />
+    <LandingPaymentMethods id="payment" />
 
     <LandingCTA />
   </div>

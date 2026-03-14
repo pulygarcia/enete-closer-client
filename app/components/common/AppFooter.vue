@@ -26,8 +26,6 @@
   </template>
   
   <script setup lang="ts">
-  const config = useRuntimeConfig()
-  const phone = config.public.whatsappPhone ?? '5491100000000'
-  const whatsappUrl = `https://wa.me/${phone}?text=Hola%2C%20quiero%20consultar%20sobre%20un%20veh%C3%ADculo`
+  import { whatsappUrl } from '~/lib/utils';
   const year = new Date().getFullYear()
   </script>

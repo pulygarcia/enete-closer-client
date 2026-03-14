@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import AcceptsTradeSwitch from '~/components/common/AcceptsTradeSwitch.vue'
+import Spinner from '~/components/common/Spinner.vue'
+import { formatPrice, statusLabel } from '~/lib/utils'
+
 const {
   isLoading,
   error,
@@ -12,9 +16,12 @@ const {
   clearCatalogFilters: clearFilters,
 } = useVehicles()
 
-import { formatPrice, statusLabel } from '~/lib/utils'
+const initialLoadDone = ref(false);
 
-onMounted(() => loadAll())
+onMounted(async () => {
+  await loadAll()
+  initialLoadDone.value = true
+})
 
 useSeoMeta({
   title: 'Catálogo — ENETE Vehículos',
@@ -94,8 +101,8 @@ useSeoMeta({
           <Button variant="outline" @click="loadAll">Reintentar</Button>
         </div>
 
-        <!-- Vacío -->
-        <div v-else-if="filteredVehicles.length === 0" class="flex flex-col items-center justify-center py-24 gap-4">
+        <!-- Vacío (solo tras haber cargado) -->
+        <div v-else-if="initialLoadDone && filteredVehicles.length === 0" class="flex flex-col items-center justify-center py-24 gap-4">
           <p class="font-display font-bold text-foreground">Sin resultados</p>
           <p class="text-sm text-muted-foreground">Probá con otros filtros</p>
           <Button variant="outline" @click="clearFilters">Limpiar filtros</Button>

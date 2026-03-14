@@ -20,5 +20,5 @@ export function statusLabel(status: string) {
   return VEHICLE_STATUS_LABELS[status] ?? status
 }
 
-const phone = '5493815429673'
+const phone = '5493865230048'
 export const whatsappUrl = `https://wa.me/${phone}?text=Hola%2C%20vi%20un%20auto%20en%20ENETE%20y%20quiero%20consultar`

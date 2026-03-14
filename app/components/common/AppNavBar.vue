@@ -32,9 +32,6 @@
   </template>
   
   <script setup lang="ts">
-import WhatsappIcon from './WhatsappIcon.vue';
-
-  const config = useRuntimeConfig()
-  const phone = config.public.whatsappPhone ?? '5491100000000'
-  const whatsappUrl = `https://wa.me/${phone}?text=Hola%2C%20vi%20un%20auto%20en%20ENETE%20y%20quiero%20consultar`
+  import WhatsappIcon from './WhatsappIcon.vue';
+  import { whatsappUrl } from '~/lib/utils';
   </script>
