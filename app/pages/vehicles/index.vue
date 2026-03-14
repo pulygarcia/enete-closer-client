@@ -1,3 +1,27 @@
+<script setup lang="ts">
+const {
+  isLoading,
+  error,
+  loadAll,
+  brands,
+  priceRanges,
+  selectedBrand,
+  selectedMaxPrice,
+  catalogAcceptsTrade: acceptsTrade,
+  filteredVehicles,
+  clearCatalogFilters: clearFilters,
+} = useVehicles()
+
+import { formatPrice, statusLabel } from '~/lib/utils'
+
+onMounted(() => loadAll())
+
+useSeoMeta({
+  title: 'Catálogo — ENETE Vehículos',
+  description: 'Explorá todos los vehículos disponibles en ENETE. Filtrá por marca, precio y permuta.',
+})
+</script>
+
 <template>
   <section class="min-h-screen bg-background">
 
@@ -16,7 +40,7 @@
 
     <!-- Filtros sticky -->
     <div class="sticky top-16 z-40 border-b border-border bg-surface/90 backdrop-blur px-4 py-4 md:px-12 lg:px-24">
-      <div class="mx-auto max-w-6xl flex flex-col sm:flex-row gap-3">
+      <div class="mx-auto max-w-6xl flex flex-col sm:flex-row gap-3 items-center">
 
         <Select v-model="selectedBrand">
           <SelectTrigger class="w-full sm:w-48">
@@ -46,20 +70,7 @@
           </SelectContent>
         </Select>
 
-        <span class="text-sm text-muted-foreground">Acepta permuta</span>
-         <button 
-            type="button"
-            role="switch"
-            :aria-checked="acceptsTrade"
-            @click="acceptsTrade = !acceptsTrade"
-            class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors"
-            :class="acceptsTrade ? 'bg-primary' : 'bg-input'"
-        >
-            <span
-            class="pointer-events-none block h-5 w-5 rounded-full bg-background shadow-sm transition-transform"
-            :class="acceptsTrade ? 'translate-x-5' : 'translate-x-0'"
-            />
-        </button>
+        <AcceptsTradeSwitch v-model="acceptsTrade" />
 
         <Button variant="outline" class="sm:ml-auto" @click="clearFilters">
           Limpiar filtros
@@ -72,20 +83,9 @@
     <div class="px-4 py-8 md:px-12 lg:px-24">
       <div class="mx-auto max-w-6xl">
 
-        <!-- Skeleton -->
-        <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div
-            v-for="n in 6"
-            :key="n"
-            class="rounded-xl border border-border bg-surface overflow-hidden animate-pulse"
-          >
-            <div class="h-48 bg-accent" />
-            <div class="p-4 flex flex-col gap-3">
-              <div class="h-4 bg-accent rounded w-3/4" />
-              <div class="h-3 bg-accent rounded w-1/2" />
-              <div class="h-6 bg-accent rounded w-1/3 mt-2" />
-            </div>
-          </div>
+        <!-- Loading -->
+        <div v-if="isLoading" class="flex flex-col items-center justify-center py-24 min-h-[280px]">
+          <Spinner />
         </div>
 
         <!-- Error -->
@@ -164,62 +164,3 @@
 
   </section>
 </template>
-
-<script setup lang="ts">
-const { vehicles, isLoading, error, loadAll } = useVehicles()
-import { formatPrice } from '~/lib/utils'
-
-const selectedBrand = ref('all')
-const selectedMaxPrice = ref('all')
-const acceptsTrade = ref(false)
-
-onMounted(() => loadAll())
-
-const brands = computed(() =>
-  [...new Set((vehicles.value ?? []).map(v => v.brand))]
-)
-
-const priceRanges = computed(() => {
-  const max = Math.max(...(vehicles.value ?? []).map(v => v.list_price))
-  const step = 5000000
-  const ranges = []
-  for (let price = step; price <= max + step; price += step) {
-    ranges.push(price)
-  }
-  return ranges
-})
-
-const filteredVehicles = computed(() => {
-  let result = vehicles.value ?? []
-  if (selectedBrand.value !== 'all') {
-    result = result.filter(v => v.brand === selectedBrand.value)
-  }
-  if (selectedMaxPrice.value !== 'all') {
-    result = result.filter(v => v.list_price <= Number(selectedMaxPrice.value))
-  }
-  if (acceptsTrade.value) {
-    result = result.filter(v => v.accepts_trade)
-  }
-  return result
-})
-
-function clearFilters() {
-  selectedBrand.value = 'all'
-  selectedMaxPrice.value = 'all'
-  acceptsTrade.value = false
-}
-
-function statusLabel(status: string) {
-  const labels: Record<string, string> = {
-    AVAILABLE: 'Disponible',
-    RESERVED: 'Reservado',
-    SOLD: 'Vendido',
-  }
-  return labels[status] ?? status
-}
-
-useSeoMeta({
-  title: 'Catálogo — ENETE Vehículos',
-  description: 'Explorá todos los vehículos disponibles en ENETE. Filtrá por marca, precio y permuta.',
-})
-</script>

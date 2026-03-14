@@ -1,20 +1,13 @@
 <script setup lang="ts">
-//common components
-import LandingHero from '~/components/common/LandingHero.vue'
-import LandingCTA from '~/components/common/LandingCTA.vue'
-import LandingPaymentMethods from '~/components/common/LandingPaymentMethods.vue'
-import WhyUs from '~/components/common/WhyUs.vue'
-import HighlightedVehiclesHeader from '~/components/common/HighlightedVehiclesHeader.vue'
-//shadcn components
-import { Badge } from '~/components/ui/badge'
-import { Button } from '~/components/ui/button'
-import { Card, CardContent } from '~/components/ui/card'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { Switch } from '~/components/ui/switch'
+import { formatPrice, statusLabel } from '~/lib/utils'
 
-import { formatPrice } from '~/lib/utils'
-
-const { vehicles, isLoading, loadFeatured } = useVehicles()
+const { 
+  vehicles, 
+  isLoading, 
+  loadFeatured, 
+  brands, 
+  priceRanges 
+} = useVehicles()
 
 useSeoMeta({
   title: 'ENETE Vehículos — Tu próximo vehículo, sin vueltas',
@@ -31,23 +24,6 @@ const featuredVehicles = computed(() => {
     result = result.filter(v => v.accepts_trade)
   }
   return result.slice(0, 6)
-})
-
-const brands = computed(() => {
-  return [...new Set((vehicles.value ?? []).map(v => v.brand))]
-})
-
-const priceRanges = computed(() => {
-  const maxPrice = Math.max(...(vehicles.value ?? []).map(v => v.list_price))
-
-  const step = 5000000
-  const ranges = []
-
-  for (let price = step; price <= maxPrice + step; price += step) {
-    ranges.push(price)
-  }
-
-  return ranges
 })
 
 const acceptsTrade = ref(true)
@@ -87,28 +63,7 @@ const acceptsTrade = ref(true)
             </SelectContent>
           </Select>
 
-          <div class="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3">
-            <span class="text-sm text-muted-foreground">Acepta permuta</span>
-            <!-- <ClientOnly>/ /TODO: funciona visualmente al clickear pero diempre está unchecked, no se pudo implementar, revisar.
-              <Switch
-                :checked="acceptsTrade"
-                @click="acceptsTrade = !acceptsTrade"
-              />
-            </ClientOnly> -->
-            <button 
-              type="button"
-              role="switch"
-              :aria-checked="acceptsTrade"
-              @click="acceptsTrade = !acceptsTrade"
-              class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors"
-              :class="acceptsTrade ? 'bg-primary' : 'bg-input'"
-            >
-              <span
-                class="pointer-events-none block h-5 w-5 rounded-full bg-background shadow-sm transition-transform"
-                :class="acceptsTrade ? 'translate-x-5' : 'translate-x-0'"
-              />
-            </button>
-          </div>
+          <AcceptsTradeSwitch v-model="acceptsTrade" bordered />
 
           <Button class="w-full font-display font-bold cursor-pointer"><!--todo: implementar navigate con filters a page correspondiente-->
             Buscar
@@ -124,12 +79,18 @@ const acceptsTrade = ref(true)
 
         <HighlightedVehiclesHeader />
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Card
+        <div v-if="isLoading" class="flex flex-col items-center justify-center py-24 min-h-[280px]">
+          <Spinner />
+        </div>
+
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <NuxtLink
             v-for="vehicle in featuredVehicles"
             :key="vehicle.id"
-            class="group overflow-hidden transition-shadow hover:shadow-md"
+            :to="`/vehicles/${vehicle.id}`"
+            class="group"
           >
+            <Card class="overflow-hidden transition-shadow hover:shadow-md h-full">
             <!-- Imagen -->
             <div class="relative h-48 bg-accent flex items-center justify-center">
               <span class="text-4xl opacity-20"><!--icon-image--></span>
@@ -140,7 +101,7 @@ const acceptsTrade = ref(true)
                   'bg-(--status-reserved) text-(--status-reserved-text)': vehicle.status === 'RESERVED',
                 }"
               >
-                {{ vehicle.status === 'AVAILABLE' ? 'Disponible' : 'Reservado' }}
+                {{ statusLabel(vehicle.status) }}
               </Badge>
             </div>
 
@@ -164,6 +125,7 @@ const acceptsTrade = ref(true)
               </div>
             </CardContent>
           </Card>
+          </NuxtLink>
         </div>
 
         <!-- mobile -->
