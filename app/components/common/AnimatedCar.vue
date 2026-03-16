@@ -128,37 +128,6 @@
   clip-path: polygon(0% 0%, 100% 20%, 100% 100%, 0% 100%);
 }
 
-.front-part2 {
-  position: absolute;
-  width: 100px;
-  height: 10px;
-  background-color: rgb(154, 11, 11);
-  right: 30px;
-  transform: rotate(6.3deg);
-  top: 212px;
-  border-bottom: 2px solid #630909;
-}
-.front-part2::after {
-  content: "";
-  position: absolute;
-  width: 10px;
-  height: 8px;
-  background-color: rgba(251, 243, 205, 0.686);
-  right: 22px;
-  top: -4px;
-  box-shadow: inset 0px -3px #000000c9;
-}
-
-.front-part2::before {
-  content: "";
-  position: absolute;
-  width: 95px;
-  height: 5px;
-  background-color: #d41111;
-  top: -5px;
-  border-radius: 50% 50% 0% 0%;
-}
-
 .front-part3 {
   position: absolute;
   background-color: #3d090965;
