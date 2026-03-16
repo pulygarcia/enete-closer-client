@@ -186,7 +186,16 @@
 <script setup lang="ts">
 const route = useRoute()
 const { currentVehicle: vehicle, isLoading, error, fetchOne } = useVehicles()
-import { whatsappUrl } from '~/lib/utils'
+import { useWhatsapp } from '#imports'
+
+const {buildUrl} = useWhatsapp();
+
+const whatsappUrl = computed(() => {
+  if (!vehicle.value) return '#'
+  return buildUrl(
+    `Hola, quisiera tener más información sobre ${vehicle.value.brand} ${vehicle.value.model} ${vehicle.value.year} catalogado en el sitio web. Patente: ${vehicle.value.plate.toUpperCase()}`
+  )
+})
 
 const selectedImage = ref(0)
 
