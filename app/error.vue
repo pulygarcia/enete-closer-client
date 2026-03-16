@@ -11,15 +11,8 @@
   
       <!-- Contenido -->
       <div class="relative flex flex-col items-center">
-  
-        <!-- Auto animado -->
-        <div class="mb-6 animate-bounce" style="animation-duration: 2s;">
-          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" class="text-primary">
-            <path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1l2-3h12l2 3h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="7.5" cy="17.5" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="16.5" cy="17.5" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M6 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
+        <div class="relative w-[380px] h-[380px] mx-auto mb-4">
+          <AnimatedCar />
         </div>
   
         <!-- 404 -->
@@ -63,7 +56,8 @@
   </template>
   
   <script setup lang="ts">
-    import { whatsappUrl } from './lib/utils';
+    import AnimatedCar from './components/common/AnimatedCar.vue';
+import { whatsappUrl } from './lib/utils';
   
   definePageMeta({ layout: 'default' })
   
