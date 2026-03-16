@@ -7,6 +7,19 @@ export interface Owner {
   email?: string
 }
 
+export type VehicleCondition =
+  | 'Excelente'
+  | 'Muy bueno'
+  | 'Bueno'
+  | 'Con detalles'
+
+export type FuelType =
+  | 'Nafta'
+  | 'Diesel'
+  | 'GNC'
+  | 'Híbrido'
+  | 'Eléctrico'
+
 export interface Vehicle {
   id: string
   brand: string
@@ -15,16 +28,20 @@ export interface Vehicle {
   year: number
   km: number
   transmission: Transmission
+  description?: string
+  condition?: VehicleCondition
   owner_price?: number // privado, solo admin
   list_price: number
   accepts_trade: boolean
+  trade_conditions?: string
+  fuel?: FuelType
   images: string[]
   owner_id: string
-    owner?: Pick<Owner, 'id' | 'full_name' | 'phone'> //si la api trae las relaciones y necesitamos owner comlpeto
+  owner?: Pick<Owner, 'id' | 'full_name' | 'phone'> //si la api trae las relaciones y necesitamos owner comlpeto
   status: VehicleStatus
   created_at: string
-    updated_at: string
-    deleted_at?: string
+  updated_at: string
+  deleted_at?: string
 }
 
 export type VehicleStatus = 'AVAILABLE' | 'RESERVED' | 'SOLD'
