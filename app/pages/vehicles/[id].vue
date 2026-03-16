@@ -108,6 +108,22 @@
               </div>
             </div>
 
+            <!-- Descripción -->
+            <div>
+              <h2 class="font-display font-bold text-foreground text-lg mb-2">Descripción</h2>
+              <p class="text-sm text-foreground/80 whitespace-pre-line">
+                {{ vehicle.description || 'No indicado' }}
+              </p>
+            </div>
+
+            <!-- Condiciones de permuta -->
+            <div>
+              <h2 class="font-display font-bold text-foreground text-lg mb-2">Condiciones de permuta</h2>
+              <p class="text-sm text-foreground/80 whitespace-pre-line">
+                {{ vehicle.trade_conditions || 'No indicado' }}
+              </p>
+            </div>
+
             <!-- Formas de pago -->
             <div>
               <h2 class="font-display font-bold text-foreground text-lg mb-4">Formas de pago</h2>
@@ -177,10 +193,15 @@ const selectedImage = ref(0)
 onMounted(() => fetchOne(route.params.id as string))
 
 const specs = computed(() => [
-  { label: 'Año', value: vehicle.value?.year },
-  { label: 'Kilometraje', value: `${vehicle.value?.km.toLocaleString('es-AR')} km` },
-  { label: 'Transmisión', value: vehicle.value?.transmission },
-  { label: 'Estado', value: statusLabel(vehicle.value?.status ?? '') },
+  { label: 'Año', value: vehicle.value?.year ?? 'No indicado' },
+  {
+    label: 'Kilometraje',
+    value: vehicle.value?.km != null ? `${vehicle.value.km.toLocaleString('es-AR')} km` : 'No indicado',
+  },
+  { label: 'Transmisión', value: vehicle.value?.transmission ?? 'No indicado' },
+  { label: 'Condición', value: vehicle.value?.condition ?? 'No indicado' },
+  { label: 'Combustible', value: vehicle.value?.fuel ?? 'No indicado' },
+  { label: 'Estado', value: vehicle.value?.status ? statusLabel(vehicle.value.status) : 'No indicado' },
 ])
 
 function statusLabel(status: string) {
