@@ -1,9 +1,9 @@
 import type { PaginationMeta } from '~/types/api.types'
 import type { Vehicle, VehicleFilters } from '~/types/vehicle.types'
-import { vehicleService } from '~/services/vehicles.service'
+import { vehicleService, type CreateVehiclePayload } from '~/services/vehicles.service'
 
 export const useVehicleStore = defineStore('vehicle', () => {
-  const vehicles = ref<Vehicle[]>([])
+  const vehicles = ref<Vehicle[] | null>(null)
   const currentVehicle = ref<Vehicle | null>(null)
   const isLoading = ref(false)
   const error = ref<string | null>(null)
@@ -36,6 +36,37 @@ export const useVehicleStore = defineStore('vehicle', () => {
     }
   }
 
+  async function createVehicle(payload: CreateVehiclePayload) {
+    isLoading.value = true
+    error.value = null
+    try {
+      const vehicle = await vehicleService.create(payload)
+      vehicles.value = [vehicle, ...(vehicles.value ?? [])]
+      return vehicle
+    } catch (e) {
+      error.value = 'No se pudo crear el vehículo'
+      throw e
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  async function deleteVehicle(id: string) {
+    isLoading.value = true
+    error.value = null
+    try {
+      await vehicleService.delete(id)
+      if (vehicles.value) {
+        vehicles.value = vehicles.value.filter(v => v.id !== id)
+      }
+    } catch (e) {
+      error.value = 'No se pudo eliminar el vehículo'
+      throw e
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   function clear() {
     vehicles.value = []
     currentVehicle.value = null
@@ -51,6 +82,8 @@ export const useVehicleStore = defineStore('vehicle', () => {
     meta,
     fetchAll,
     fetchById,
+    createVehicle,
+    deleteVehicle,
     clear,
   }
 })

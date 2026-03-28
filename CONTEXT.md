@@ -44,21 +44,16 @@ Service              →  comunicación con la API, sin estado
 src/
 ├── assets/
 │   └── css/
-│       └── main.css             # Tailwind base + variables globales
+│       └── tailwind.css             # Tailwind base + variables globales
 ├── components/
 │   ├── ui/                      # Componentes shadcn-vue (nunca modificar directamente)
 │   ├── common/                  # Navbar, Footer, Sidebar, PageHeader, EmptyState...
-│   ├── vehicles/
-│   │   ├── VehicleCard.vue      # Tarjeta del catálogo público
-│   │   ├── VehicleGallery.vue   # Galería de fotos
-│   │   ├── VehicleFilters.vue   # Filtros del catálogo
-│   │   └── VehicleBadge.vue     # Badge de estado (Disponible/Reservado)
-│   ├── owners/
-│   └── sales/
 ├── composables/
 │   ├── useVehicles.ts
 │   ├── useOwners.ts
 │   ├── useConsignments.ts
+│   ├── useDashboard.ts
+│   ├── useWhatsapp.ts <--ordena el mensaje con data pre-escrita para la consulta
 │   └── useSales.ts
 ├── layouts/
 │   ├── default.vue              # Catálogo público (Navbar + Footer)
@@ -67,7 +62,8 @@ src/
 │   └── auth.ts                  # Redirige a /login si no hay sesión activa
 ├── pages/
 │   ├── index.vue                # Catálogo público — listado con filtros
-│   ├── login.vue                # Login del administrador
+│   ├── auth/
+│   │   └── login.vue             # Iniciar sesion administrador only (better-auth)
 │   ├── vehicles/
 │   │   └── [id].vue             # Detalle público de un vehículo
 │   └── admin/
@@ -97,16 +93,19 @@ src/
 │   ├── vehicle.service.ts
 │   ├── owner.service.ts
 │   ├── consignment.service.ts
+│   ├── dashboard.service.ts
 │   └── sale.service.ts
 ├── stores/
 │   ├── auth.store.ts            # Sesión del usuario admin
 │   ├── vehicle.store.ts         # Estado de vehículos (listado, filtros activos)
 │   ├── owner.store.ts
+│   ├── dashboard.store.ts
 │   └── ui.store.ts              # Loading global, toasts, estado del sidebar
 └── types/
     ├── vehicle.types.ts
     ├── owner.types.ts
     ├── consignment.types.ts
+    ├── dashboard.types.ts
     ├── sale.types.ts
     └── api.types.ts             # ApiResponse<T>, Pagination, FilterParams
 ```

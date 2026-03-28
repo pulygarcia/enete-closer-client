@@ -23,6 +23,14 @@ export function useVehicles() {
     await store.fetchById(id)
   }
 
+  async function createVehicle(payload: Parameters<typeof store.createVehicle>[0]) {
+    return store.createVehicle(payload)
+  }
+
+  async function deleteVehicle(id: string) {
+    await store.deleteVehicle(id)
+  }
+
   const brands = computed(() =>
     [...new Set((store.vehicles ?? []).map(v => v.brand))].sort()
   )
@@ -82,5 +90,7 @@ export function useVehicles() {
     loadFeatured,
     loadAll,
     fetchOne,
+    createVehicle,
+    deleteVehicle,
   }
 }
